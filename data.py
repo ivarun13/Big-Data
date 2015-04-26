@@ -1,3 +1,5 @@
+# http://pythonprogramming.net/use-twitter-api-v1-1-python-stream-tweets/
+
 from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
