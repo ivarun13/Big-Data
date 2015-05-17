@@ -30,7 +30,7 @@ class listener (StreamListener):
             lang=data.split(',"lang":"')[1].split('","contributors_enabled')[0]
             Data='Created at:: '+time+'\n'+'Tweet:: '+tweet+'\n'+'Name:: '+name+'\n'+'Location:: '+location+'\n'+'Time_Zone:: '+time_zone+'\n'+'Language:: '+lang+'\n'
             print (Data)
-            db.twitterdb.insert({"Data":Data})
+            db.twitterdb.insert({"Created at::":time},{"Tweet::":tweet},{"Name":name},{"Location":location},{"Time_Zone":time_zone},{"Language":lang})
             output=open('twitter.txt','a')
             output.write(Data)
             output.write('\n')
@@ -45,4 +45,4 @@ class listener (StreamListener):
 auth=OAuthHandler(ckey,csecret)
 auth.set_access_token(atoken,asecret)
 twitterStream=Stream(auth,listener())
-twitterStream.filter(track=["amazon"])
+twitterStream.filter(track=["google"])
