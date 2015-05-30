@@ -7,7 +7,8 @@ from pymongo import MongoClient
 import os
 
 try:
-    os.remove('twitter.txt')
+    client=MongoClient()
+    client.drop_database("twitterdb")
 except OSError:
     pass
 
@@ -28,13 +29,13 @@ class listener (StreamListener):
             location=data.split(',"location":"')[1].split('","url')[0]
             time_zone=data.split(',"time_zone":"')[1].split('","geo_enabled')[0]
             lang=data.split(',"lang":"')[1].split('","contributors_enabled')[0]
-            Data='Created at:: '+time+'\n'+'Tweet:: '+tweet+'\n'+'Name:: '+name+'\n'+'Location:: '+location+'\n'+'Time_Zone:: '+time_zone+'\n'+'Language:: '+lang+'\n'
-            print (Data)
-            db.twitterdb.insert({"Created at::":time},{"Tweet::":tweet},{"Name":name},{"Location":location},{"Time_Zone":time_zone},{"Language":lang})
-            output=open('twitter.txt','a')
-            output.write(Data)
-            output.write('\n')
-            output.close()
+            Data={"Created at:: ":time,"Tweet:: ":tweet,"Name:: ":name,"Location:: ":location,"Time_Zone:: ":time_zone,"Language:: ":lang}
+            print Data
+            db.twitterdb.insert(Data)
+            #output=open('twitter.txt','a')
+            #output.write(Data)
+            #output.write('\n')
+            #output.close()
             return True
         except BaseException, e:
             print 'error', str(e)
@@ -45,4 +46,4 @@ class listener (StreamListener):
 auth=OAuthHandler(ckey,csecret)
 auth.set_access_token(atoken,asecret)
 twitterStream=Stream(auth,listener())
-twitterStream.filter(track=["google"])
+twitterStream.filter(track=["twitter"])
